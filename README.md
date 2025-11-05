@@ -14,7 +14,9 @@ Each task folder includes:
 
 
  **Task 1** YOLOv8 Installation & Test - Installed the Ultralytics package, tested object detection and segmentation on a sample image. 
+ 
  **Task 2**  Multi-Image Detection & Metrics Evaluation - Performed batch object detection and segmentation on multiple images; evaluated model metrics like precision, recall, and mAP. 
+ 
  **Task 3**  Video Frame Processing - Extracted frames from a video using FFmpeg, applied YOLOv8 detection, and reassembled the processed frames into a new output video. 
 
 ---
