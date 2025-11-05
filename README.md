@@ -21,37 +21,4 @@ Each task folder includes:
 
 ---
 
- ⚙️ Environment Setup
 
-1. **Create a virtual environment**
-   ```bash
-   python -m venv venv
-   venv\Scripts\activate
-
-   venv\Scripts\activate      # Windows
-Install required packages
-
-bash
-Copy code
-pip install ultralytics opencv-python ffmpeg-python
-Test the setup
-
-python
-Copy code
-from ultralytics import YOLO
-model = YOLO('yolov8n.pt')
-model('https://ultralytics.com/images/bus.jpg').show()
-🧩 Tools & Technologies Used
-Python 3.x
-
-Ultralytics YOLOv8
-
-OpenCV
-
-FFmpeg
-
-Jupyter Notebook
-
-Matplotlib / NumPy (for analysis)
-
-Virtual Environment (venv)
