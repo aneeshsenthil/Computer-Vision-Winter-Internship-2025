@@ -32,10 +32,10 @@ Objects such as cars, buses, and people were correctly detected.
 The output images display clear bounding boxes and confidence scores.
 All results are included in this folder as screenshots or saved images.
 
-🧰 Tools Used
-Python 3.10
-Ultralytics YOLOv8
-Jupyter Notebook
+### 🧰 Tools Used
+- Python 3.10+  
+- Ultralytics YOLOv8  
+- Jupyter Notebook  
 
 
 🧾 Sample Code
