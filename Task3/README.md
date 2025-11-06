@@ -14,37 +14,27 @@ Apply object detection on video content by:
 ## ⚙️ Technical Implementation
 
 ### Step 1: Frame Extraction
-```bash
-ffmpeg -i input_video.mp4 frames/frame_%04d.jpg
-```
+The input video was converted into individual image frames, enabling frame-by-frame processing for object detection.
+
 ### Step 2: Object Detection
--Applied YOLOv8 object detection on each extracted frame
--Generated bounding boxes and class labels for detected objects
--Processed frames stored with detection annotations
+Each extracted frame was passed through the YOLOv8 model.  
+Bounding boxes and class labels were added to highlight detected objects, and the processed frames were saved for reconstruction.
 
 ### Step 3: Video Reconstruction
-```bash
-ffmpeg -r 24 -i processed/frame_%04d.jpg -vcodec libx264 output_processed.mp4
-```
+The processed frames were combined back into a video.  
+This produced a final output video that shows object detection results continuously across all frames.
+
 
 ### Results
 The final output video (output_processed.mp4) clearly displays object detection in motion, with bounding boxes and labels visible across all frames. Processed frames successfully retain all detection information while maintaining video quality.
 
-### Analysis & Insights
- YOLOv8 Performs Well When:
--Objects are clearly visible and well-lit
--Lighting conditions are sufficient
--Object size is reasonable for detection
--Minimal motion blur present
-
-
 
 ### Tools & Technologies
--Python 3.10+
--FFmpeg - Video processing and frame extraction
--Ultralytics YOLOv8 - Object detection
--OpenCV - Computer vision operations
--NumPy - Numerical computations
+- Python 3.10+
+- FFmpeg - Video processing and frame extraction
+- Ultralytics YOLOv8 - Object detection
+- OpenCV - Computer vision operations
+- NumPy - Numerical computations
 
 
 This project successfully demonstrates a robust pipeline for video-based object detection by treating video as a sequence of images. The method of extracting frames, applying YOLOv8 detection, and reconstructing the video provides clear visualization of object detection in motion.
