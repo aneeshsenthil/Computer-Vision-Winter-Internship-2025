@@ -1,144 +1,85 @@
-Here is a comprehensive and professional README.md file structure. It includes detailed sections for environment setup, the specific Label Studio export workflow, and a robust Python script for counting.
+# 🦾 Rod Count Using Computer Vision (YOLOv8)
 
-🏗️ Rod Detection & Automated Counting System
-A complete end-to-end computer vision pipeline using YOLOv8 for real-time detection and counting of metal/industrial rods. This project covers everything from raw image annotation in Label Studio to deploying an automated counter.
+## 📌 Project Overview
+This project focuses on automatically **detecting and counting rods in images** using **computer vision and deep learning**.  
+A custom dataset was created and labeled using **Label Studio**, and a **YOLOv8 object detection model** was trained to accurately identify individual rods, even in **overlapping and dense arrangements**.
 
-📋 Table of Contents
-Features
+The final output displays bounding boxes around each rod and provides the **total rod count** for the input image.
 
-Installation
+---
 
-Data Preparation (Label Studio)
+## 🎯 Objectives
+- Detect individual rods in images
+- Accurately count the number of rods
+- Handle overlapping rods and varying orientations
+- Achieve real-time detection using YOLOv8
 
-Model Training
+---
 
-Inference & Counting
+## 🧠 Technologies Used
+- **Python**
+- **YOLOv8 (Ultralytics)**
+- **OpenCV**
+- **Label Studio** (for dataset labeling)
+- **NumPy**
 
-Results & Evaluation
+---
 
-✨ Features
-High Precision: Uses YOLOv8 (You Only Look Once) for fast and accurate detection.
+## 🗂️ Dataset Preparation
 
-Custom Labeling: Integrated workflow for custom datasets using Label Studio.
+### 📸 Image Collection
+- 100-120 rod images collected
+- Images include:
+  - Top-view rod ends
+  - Overlapping and stacked rods
+  - Different lighting and backgrounds
 
-Automated Counting: Logic to count instances and display the total on the output image/video.
+### ✍️ Image Labeling
+- Tool used: **Label Studio**
+- Each rod was labeled **individually**
+- Single class used: `rod_end`
+- Labels exported in **YOLO format**
 
-Batch Processing: Ability to process entire folders of images and export results to CSV.
+---
 
-⚙️ Installation
-1. Clone the Repository
-Bash
+## 🖼️ Image Preprocessing
+Since images were already colored and clear, minimal preprocessing was applied:
+- **Resizing images to 640×640 pixels** (YOLO input size)
+- **Image sharpening** to enhance rod edges
 
-git clone https://github.com/yourusername/rod-detection-yolov8.git
-cd rod-detection-yolov8
-2. Setup Environment
-It is recommended to use a virtual environment:
+These steps improved detection accuracy and ensured consistent model input.
 
-Bash
+---
 
-python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
-pip install ultralytics label-studio opencv-python pandas
-🏷️ Data Preparation (Label Studio)
-1. Launch Labeling Tool
-Bash
+## 🏗️ Model Training
 
-label-studio start
-Open http://localhost:8080.
+- Pretrained model: `yolov8n.pt`
+- Framework: **Ultralytics YOLOv8**
+- Training performed on the custom labeled dataset
 
-Create a new project named "Rod Detection".
+### Training Command:
+```bash
+yolo detect train model=yolov8n.pt data=dataset.yaml epochs=50 imgsz=640
+```
+### Rod Detection & Counting
+	- The trained YOLOv8 model detects rods in test images
+	-	Each detected rod is marked with a bounding box
+	-	Rod count = number of detected bounding boxes
+### Results
+	•	Successfully detects and counts rods in most test images
+	•	Performs well even when rods overlap or are densely packed
+	•	Suitable for real-time rod counting applications
 
-In Labeling Setup, choose Object Detection -> Bounding Boxes.
+### Limitations
+	•	Accuracy may reduce in extremely dense stacks
+	•	Very small or heavily occluded rods can be missed
 
-Add your label: rod.
-
-2. Exporting for YOLOv8
-Once labeling is complete:
-
-Click the Export button.
-
-Select the YOLO format.
-
-Download the .zip and extract it into a folder named dataset.
-
-3. Directory Structure
-Organize your files as follows:
-
-Plaintext
-
-/dataset
-  ├── /images
-  │    ├── train/
-  │    └── val/
-  ├── /labels
-  │    ├── train/
-  │    └── val/
-  └── data.yaml
-🏋️ Model Training
-Create a data.yaml file to point to your dataset:
-
-YAML
-
-path: ./dataset
-train: images/train
-val: images/val
-
-names:
-  0: rod
-Run the training script:
-
-Python
-
-from ultralytics import YOLO
-
-# Load a pretrained model (YOLOv8 Small is recommended for speed/accuracy balance)
-model = YOLO('yolov8s.pt')
-
-# Train
-model.train(
-    data='data.yaml',
-    epochs=100,
-    imgsz=640,
-    batch=16,
-    device=0 # Set to 'cpu' if no GPU available
-)
-🔍 Inference & Counting
-Use the following script to detect rods and overlay the total count on the image:
-
-Python
-
-import cv2
-from ultralytics import YOLO
-
-# Load your custom model
-model = YOLO('runs/detect/train/weights/best.pt')
-
-# Run inference
-img_path = 'test_image.jpg'
-results = model(img_path)
-
-# Process results
-for r in results:
-    count = len(r.boxes)
-    print(f"Detected {count} rods.")
-    
-    # Plot results on image
-    res_plotted = r.plot()
-    
-    # Add text overlay for count
-    cv2.putText(res_plotted, f"Total Rods: {count}", (50, 50), 
-                cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
-    
-    cv2.imshow("Rod Count", res_plotted)
-    cv2.waitKey(0)
-📊 Results & Evaluation
-After training, check the runs/detect/train/ folder for:
-
-results.png: Loss curves and mAP metrics.
-
-confusion_matrix.png: To see if the model is confusing rods with background elements.
-
-val_batch0_labels.jpg: To verify the ground truth vs. predictions.
-
-📜 License
-Distributed under the MIT License. See LICENSE for more information.
+### Future Improvements
+	•	Use instance segmentation for better separation of touching rods
+	•	Increase dataset size for higher accuracy
+	•	Deploy model as a web or mobile application
+	•	Add real-time video stream support
+  
+### Conclusion
+This project demonstrates how deep learning and computer vision can be used to solve practical industrial problems such as rod counting.
+By leveraging YOLOv8 and a custom-labeled dataset, the system achieves accurate and efficient rod detection and counting.
